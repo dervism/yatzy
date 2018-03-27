@@ -5,19 +5,14 @@ import no.nav.model.Category;
 
 import java.util.*;
 
-public class RandomSelection implements Selection {
+public class RandomSelection extends AbstractSelection {
 
-    @Override
-    public Optional<Category> select(Collection<Integer> list, Collection<Category> taken) {
-        if (list.isEmpty()) return Optional.empty();
+    public RandomSelection() {
+        super();
+    }
 
-        List<Integer> notTaken = Util.availableCategories(list, taken);
-
-        // the currently available categories is not among the dice we got
-        if (notTaken.isEmpty()) return Optional.empty();
-
-        Collections.shuffle(notTaken);
-        return Optional.of(Category.fromIndex(notTaken.get(0)));
+    public RandomSelection(Collection<Integer> diceList, Collection<Category> categoryList) {
+        super(diceList, categoryList);
     }
 
     public static Category random(Collection<Category> list) {
@@ -27,4 +22,21 @@ public class RandomSelection implements Selection {
         return categories.get(0);
     }
 
+    @Override
+    public Optional<Category> select() {
+        if (getDiceList().isEmpty()) return Optional.empty();
+
+        List<Integer> notTaken = Util.selectableValues(getDiceList(), getCategoryList());
+
+        // the currently available categories is not among the dice we got
+        if (notTaken.isEmpty()) return Optional.empty();
+
+        Collections.shuffle(notTaken);
+        return Optional.of(Category.fromIndex(notTaken.get(0)));
+    }
+
+    @Override
+    public Selection build(Collection<Integer> list, Collection<Category> categories) {
+        return new RandomSelection(list, categories);
+    }
 }

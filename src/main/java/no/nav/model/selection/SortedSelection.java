@@ -10,15 +10,23 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class SortedSelection implements Selection {
+public class SortedSelection extends AbstractSelection {
+
+    public SortedSelection() {
+        super();
+    }
+
+    public SortedSelection(Collection<Integer> diceList, Collection<Category> categoryList) {
+        super(diceList, categoryList);
+    }
 
     @Override
-    public Optional<Category> select(Collection<Integer> list, Collection<Category> taken) {
-        Stream<Map.Entry<Integer, Long>> sorted = list.stream()
+    public Optional<Category> select() {
+        Stream<Map.Entry<Integer, Long>> sorted = getDiceList().stream()
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
                 .entrySet()
                 .stream()
-                .filter(entry -> !taken.contains(Category.fromIndex(entry.getKey())))
+                .filter(entry -> !getCategoryList().contains(Category.fromIndex(entry.getKey())))
                 .sorted(Comparator.comparing(Map.Entry<Integer, Long>::getValue)
                         .thenComparing(Comparator.comparingLong(o -> o.getKey() * o.getValue()))
                         .thenComparing(Comparator.comparingLong(Map.Entry::getKey)).reversed());
@@ -28,4 +36,8 @@ public class SortedSelection implements Selection {
         return sortedFirst.map(value -> Category.fromIndex(value.getKey()));
     }
 
+    @Override
+    public Selection build(Collection<Integer> list, Collection<Category> categories) {
+        return new SortedSelection(list, categories);
+    }
 }

@@ -11,11 +11,6 @@ class YatzyTest {
 
         System.out.println();
 
-        Yatzy game = new Yatzy(new SmartPlayer());
-        game.play();
-
-        System.out.println();
-
         Yatzy random = new Yatzy(new RandomPlayer());
         random.play();
     }

@@ -4,17 +4,21 @@ import no.nav.model.Category;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SortedSelectionTest {
 
+    private final List<Category> empty = Collections.emptyList();
+
     @Test
     void should_select_bycount_and_byvalue() {
-        SortedSelection strategy = new SortedSelection();
+        SortedSelection strategy = new SortedSelection(Arrays.asList(5, 6, 1, 5, 1), empty);
 
-        Optional<Category> category = strategy.select(Arrays.asList(5, 6, 1, 5, 1));
+        Optional<Category> category = strategy.select();
         assertTrue(category.isPresent());
 
         System.out.println(category);
@@ -23,9 +27,9 @@ class SortedSelectionTest {
 
     @Test
     void should_select_byvalue() {
-        SortedSelection strategy = new SortedSelection();
+        SortedSelection strategy = new SortedSelection(Arrays.asList(5, 6, 2, 3, 1), empty);
 
-        Optional<Category> category = strategy.select(Arrays.asList(5, 6, 2, 3, 1));
+        Optional<Category> category = strategy.select();
         assertTrue(category.isPresent());
 
         System.out.println(category);
@@ -34,9 +38,9 @@ class SortedSelectionTest {
 
     @Test
     void should_select_bycount() {
-        SortedSelection strategy = new SortedSelection();
+        SortedSelection strategy = new SortedSelection(Arrays.asList(3, 3, 2, 2, 2), empty);
 
-        Optional<Category> category = strategy.select(Arrays.asList(3, 3, 2, 2, 2));
+        Optional<Category> category = strategy.select();
         assertTrue(category.isPresent());
 
         System.out.println(category);

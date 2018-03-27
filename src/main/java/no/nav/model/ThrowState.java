@@ -1,9 +1,6 @@
 package no.nav.model;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ThrowState {
@@ -66,10 +63,10 @@ public class ThrowState {
         return getDices().stream().distinct().count() == 1;
     }
 
-    public List<Integer> filterDices(int n) {
+    public List<Integer> filterDices(int... n) {
         return getDices()
                 .stream()
-                .filter(dice -> dice.equals(n))
+                .filter(dice -> Arrays.stream(n).anyMatch(value -> value == dice))
                 .collect(Collectors.toList());
     }
 
