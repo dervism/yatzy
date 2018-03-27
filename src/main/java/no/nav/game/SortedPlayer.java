@@ -5,11 +5,11 @@ import no.nav.http.Dice;
 import no.nav.http.DiceLocal;
 import no.nav.model.Category;
 import no.nav.model.ThrowState;
+import no.nav.model.maximizer.FrequencyMaximizer;
+import no.nav.model.maximizer.Maximizer;
 
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static no.nav.model.Category.*;
 
 // bycount deretter bysum deretter byvalue
 
@@ -73,7 +73,7 @@ public class SortedPlayer implements Player {
         LinkedList<Map.Entry<Category, Long>> secondList = sort(count(scoresheet, secondThrow));
         Category secondCategory = secondList.getFirst().getKey();
 
-        secondCategory = maximizer.maximize(secondCategory, secondList, secondThrow, scoresheet);
+        secondCategory = maximizer.maximize(secondCategory, secondThrow, scoresheet);
         secondThrow.setCategory(secondCategory);
         secondThrow.setSum(Util.sum(secondThrow.filterDices(secondCategory.index())));
 
@@ -91,7 +91,7 @@ public class SortedPlayer implements Player {
         LinkedList<Map.Entry<Category, Long>> thirdList = sort(count(scoresheet, thirdThrow));
         Category thirdCategory = thirdList.getFirst().getKey();
 
-        thirdCategory = maximizer.maximize(thirdCategory, thirdList, thirdThrow, scoresheet);
+        thirdCategory = maximizer.maximize(thirdCategory, thirdThrow, scoresheet);
         thirdThrow.setSum(Util.sum(thirdThrow.filterDices(thirdCategory.index())));
         thirdThrow.setCategory(thirdCategory);
 
@@ -131,47 +131,4 @@ public class SortedPlayer implements Player {
         return "SortedPlayer{}";
     }
 
-    public interface Maximizer {
-        Category maximize(Category selectedCategory, LinkedList<Map.Entry<Category, Long>> thirdList, ThrowState state, Map<Category, Integer> scoresheet);
-    }
-
-    public static class FrequencyMaximizer implements Maximizer {
-        public FrequencyMaximizer() {
-        }
-
-        @Override
-        public Category maximize(Category selectedCategory, LinkedList<Map.Entry<Category, Long>> thirdList, ThrowState state, Map<Category, Integer> scoresheet) {
-            if (selectedCategory == Category.SIX) {
-                int freq6 = Collections.frequency(state.getDices(), 6);
-                if (freq6 < 3) {
-                    return !scoresheet.containsKey(ONE) ? ONE : !scoresheet.containsKey(TWO) ? TWO : !scoresheet.containsKey(THREE) ? THREE : selectedCategory;
-                }
-            }
-
-            if (selectedCategory == Category.FIVE) {
-                int freq5 = Collections.frequency(state.getDices(), 5);
-                if (freq5 < 2) {
-                    return !scoresheet.keySet().contains(ONE) ? ONE : !scoresheet.keySet().contains(TWO) ? TWO : !scoresheet.containsKey(THREE) ? THREE : selectedCategory;
-                }
-            }
-
-            if (selectedCategory == Category.FOUR) {
-                int freq4 = Collections.frequency(state.getDices(), 4);
-                if (freq4 < 2) {
-                    return !scoresheet.keySet().contains(ONE) ? ONE : !scoresheet.keySet().contains(TWO) ? TWO : !scoresheet.containsKey(THREE) ? THREE : selectedCategory;
-                }
-            }
-
-            return selectedCategory;
-        }
-    }
-
-    public static class StatisticalMaximizer implements Maximizer {
-
-        @Override
-        public Category maximize(Category selectedCategory, LinkedList<Map.Entry<Category, Long>> thirdList, ThrowState state, Map<Category, Integer> scoresheet) {
-
-            return null;
-        }
-    }
 }
