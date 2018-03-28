@@ -7,7 +7,7 @@ import no.nav.model.Category;
 import no.nav.model.ThrowState;
 import no.nav.model.maximizer.FrequencyMaximizer;
 import no.nav.model.maximizer.Maximizer;
-import no.nav.model.selection.MinValueSelection;
+import no.nav.model.selection.MaxValueSelection;
 import no.nav.model.selection.RandomSelection;
 import no.nav.model.selection.SortedSelection;
 
@@ -31,12 +31,6 @@ public class YatzyPlayer implements Player {
         this.log = log;
     }
 
-
-
-    public String toString() {
-        return "RandomPlayer{}";
-    }
-
     @Override
     public List<Integer> throwDice(int numberOfDice) {
         return dice.roll(numberOfDice);
@@ -55,9 +49,9 @@ public class YatzyPlayer implements Player {
         return thirdThrow;
     }
 
-    private ThrowState firstThrow(Map<Category, Integer> scoresheet, List<Category> selectableCategories) {
+    protected ThrowState firstThrow(Map<Category, Integer> scoresheet, List<Category> selectableCategories) {
         ThrowState firstThrow = new ThrowState(throwDice(5));
-        Category firstCategory = getCategory2(scoresheet, firstThrow).orElse(selectableCategories.get(0));
+        Category firstCategory = selectCategory(scoresheet, firstThrow).orElse(selectableCategories.get(0));
         firstThrow.setCategory(firstCategory);
         firstThrow.setSum(Util.sum(firstThrow.filterDices(firstCategory.index())));
 
@@ -68,14 +62,14 @@ public class YatzyPlayer implements Player {
         return firstThrow;
     }
 
-    private ThrowState secondThrow(Map<Category, Integer> scoresheet, List<Category> selectableCategories, ThrowState firstThrow) {
+    protected ThrowState secondThrow(Map<Category, Integer> scoresheet, List<Category> selectableCategories, ThrowState firstThrow) {
         ThrowState secondThrow = new ThrowState(firstThrow);
 
         List<Integer> list2 = firstThrow.filterDices(firstThrow.getCategory().index());
         list2.addAll(throwDice(5 - list2.size()));
         secondThrow.setDices(list2);
 
-        Category secondCategory = getCategory2(scoresheet, secondThrow).orElse(selectableCategories.get(0));
+        Category secondCategory = selectCategory(scoresheet, secondThrow).orElse(selectableCategories.get(0));
         secondCategory = maximizer.maximize(secondCategory, secondThrow, scoresheet);
         secondThrow.setCategory(secondCategory);
         secondThrow.setSum(Util.sum(secondThrow.filterDices(secondCategory.index())));
@@ -87,14 +81,14 @@ public class YatzyPlayer implements Player {
         return secondThrow;
     }
 
-    private ThrowState thirdThrow(Map<Category, Integer> scoresheet, List<Category> selectableCategories, ThrowState firstThrow, ThrowState secondThrow) {
+    protected ThrowState thirdThrow(Map<Category, Integer> scoresheet, List<Category> selectableCategories, ThrowState firstThrow, ThrowState secondThrow) {
         ThrowState thirdThrow = new ThrowState(secondThrow);
 
         List<Integer> list3 = secondThrow.filterDices(firstThrow.getCategory().index(), secondThrow.getCategory().index());
         list3.addAll(throwDice(5 - list3.size()));
         thirdThrow.setDices(list3);
 
-        Category thirdCategory = getCategory2(scoresheet, thirdThrow).orElse(selectableCategories.get(0));
+        Category thirdCategory = selectCategory(scoresheet, thirdThrow).orElse(selectableCategories.get(0));
         thirdCategory = maximizer.maximize(thirdCategory, thirdThrow, scoresheet);
         thirdThrow.setCategory(thirdCategory);
         thirdThrow.setSum(Util.sum(thirdThrow.filterDices(thirdCategory.index())));
@@ -106,9 +100,13 @@ public class YatzyPlayer implements Player {
         return thirdThrow;
     }
 
-    private Optional<Category> getCategory2(Map<Category, Integer> scoresheet, ThrowState state) {
+    protected Optional<Category> selectCategory(Map<Category, Integer> scoresheet, ThrowState state) {
         return new SortedSelection(state.getDices(), scoresheet.keySet())
-                .orElse(new MinValueSelection(),
+                .orElse(new MaxValueSelection(),
                         new RandomSelection());
+    }
+
+    public String toString() {
+        return "YatzyPlayer{}";
     }
 }

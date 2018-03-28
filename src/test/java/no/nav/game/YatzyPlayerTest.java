@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 
-class RandomPlayerTest {
+class YatzyPlayerTest {
 
     @Test
     void play() {
