@@ -7,26 +7,26 @@ import no.nav.model.Category;
 import no.nav.model.ThrowState;
 import no.nav.model.maximizer.FrequencyMaximizer;
 import no.nav.model.maximizer.Maximizer;
-import no.nav.model.selection.EqualSelection;
 import no.nav.model.selection.MinValueSelection;
 import no.nav.model.selection.RandomSelection;
+import no.nav.model.selection.SortedSelection;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class RandomPlayer implements Player {
+public class YatzyPlayer implements Player {
 
     private final Maximizer maximizer = new FrequencyMaximizer();
     private Dice dice;
     private boolean log;
 
-    public RandomPlayer() {
+    public YatzyPlayer() {
         log = false;
         dice =  new DiceLocal();
     }
 
-    public RandomPlayer(long seed, boolean log) {
+    public YatzyPlayer(long seed, boolean log) {
         this.dice = new DiceLocal(seed);
         this.log = log;
     }
@@ -57,8 +57,7 @@ public class RandomPlayer implements Player {
 
     private ThrowState firstThrow(Map<Category, Integer> scoresheet, List<Category> selectableCategories) {
         ThrowState firstThrow = new ThrowState(throwDice(5));
-        Category firstCategory = getCategory(scoresheet, firstThrow).orElse(selectableCategories.get(0));
-        //firstCategory = maximizer.maximize(firstCategory, firstThrow, scoresheet);
+        Category firstCategory = getCategory2(scoresheet, firstThrow).orElse(selectableCategories.get(0));
         firstThrow.setCategory(firstCategory);
         firstThrow.setSum(Util.sum(firstThrow.filterDices(firstCategory.index())));
 
@@ -76,7 +75,7 @@ public class RandomPlayer implements Player {
         list2.addAll(throwDice(5 - list2.size()));
         secondThrow.setDices(list2);
 
-        Category secondCategory = getCategory(scoresheet, secondThrow).orElse(selectableCategories.get(0));
+        Category secondCategory = getCategory2(scoresheet, secondThrow).orElse(selectableCategories.get(0));
         secondCategory = maximizer.maximize(secondCategory, secondThrow, scoresheet);
         secondThrow.setCategory(secondCategory);
         secondThrow.setSum(Util.sum(secondThrow.filterDices(secondCategory.index())));
@@ -95,8 +94,8 @@ public class RandomPlayer implements Player {
         list3.addAll(throwDice(5 - list3.size()));
         thirdThrow.setDices(list3);
 
-        Category thirdCategory = getCategory(scoresheet, thirdThrow).orElse(selectableCategories.get(0));
-        //thirdCategory = maximizer.maximize(thirdCategory, thirdThrow, scoresheet);
+        Category thirdCategory = getCategory2(scoresheet, thirdThrow).orElse(selectableCategories.get(0));
+        thirdCategory = maximizer.maximize(thirdCategory, thirdThrow, scoresheet);
         thirdThrow.setCategory(thirdCategory);
         thirdThrow.setSum(Util.sum(thirdThrow.filterDices(thirdCategory.index())));
 
@@ -107,9 +106,9 @@ public class RandomPlayer implements Player {
         return thirdThrow;
     }
 
-    private Optional<Category> getCategory(Map<Category, Integer> scoresheet, ThrowState state) {
-        return new EqualSelection(state.getDices(), scoresheet.keySet())
-                    .orElse(new MinValueSelection(),
-                            new RandomSelection());
+    private Optional<Category> getCategory2(Map<Category, Integer> scoresheet, ThrowState state) {
+        return new SortedSelection(state.getDices(), scoresheet.keySet())
+                .orElse(new MinValueSelection(),
+                        new RandomSelection());
     }
 }

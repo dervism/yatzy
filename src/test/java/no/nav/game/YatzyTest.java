@@ -6,12 +6,7 @@ class YatzyTest {
 
     @Test
     void play() {
-        Yatzy sorted = new Yatzy(new SortedPlayer());
-        sorted.play();
-
-        System.out.println();
-
-        Yatzy random = new Yatzy(new RandomPlayer());
-        random.play();
+        Yatzy player = new Yatzy(new YatzyPlayer());
+        player.play();
     }
 }

@@ -1,9 +1,9 @@
 package no.nav.game;
 
 import no.nav.model.Category;
-import no.nav.model.selection.EqualSelection;
 import no.nav.model.selection.MaxValueSelection;
 import no.nav.model.selection.MinValueSelection;
+import no.nav.model.selection.MinimumEqualSelection;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -14,13 +14,13 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class EqualSelectionTest {
+class MinimumEqualSelectionTest {
 
     private final List<Category> empty = Collections.emptyList();
 
     @Test
     void should_select_the_highest_valued_pair() {
-        EqualSelection strategy = new EqualSelection(Arrays.asList(5, 6, 1, 5, 1), empty);
+        MinimumEqualSelection strategy = new MinimumEqualSelection(Arrays.asList(5, 6, 1, 5, 1), empty);
 
         Optional<Category> category = strategy.select();
         assertTrue(category.isPresent());
@@ -31,7 +31,7 @@ class EqualSelectionTest {
 
     @Test
     void should_select_the_next_highest_valued_pair_if_taken() {
-        EqualSelection strategy = new EqualSelection(Arrays.asList(5, 6, 1, 5, 1), Arrays.asList(Category.FIVE));
+        MinimumEqualSelection strategy = new MinimumEqualSelection(Arrays.asList(5, 6, 1, 5, 1), Arrays.asList(Category.FIVE));
 
         Optional<Category> category = strategy.select();
         assertTrue(category.isPresent());
@@ -42,7 +42,7 @@ class EqualSelectionTest {
 
     @Test
     void should_select_a_pair_of_one() {
-        EqualSelection strategy = new EqualSelection(Arrays.asList(1, 1, 4, 5, 6), empty);
+        MinimumEqualSelection strategy = new MinimumEqualSelection(Arrays.asList(1, 1, 4, 5, 6), empty);
 
         Optional<Category> category = strategy.select();
         assertTrue(category.isPresent());
@@ -53,7 +53,7 @@ class EqualSelectionTest {
 
     @Test
     void should_select_the_highest_valued_dice_when_no_pair_is_present() {
-        EqualSelection strategy = new EqualSelection(Arrays.asList(6, 4, 3, 2, 1), empty);
+        MinimumEqualSelection strategy = new MinimumEqualSelection(Arrays.asList(6, 4, 3, 2, 1), empty);
 
         Optional<Category> category = strategy.orElse(new MaxValueSelection());
         assertTrue(category.isPresent());
@@ -64,7 +64,7 @@ class EqualSelectionTest {
 
     @Test
     void should_select_the_lowest_valued_dice_when_no_pair_is_present() {
-        EqualSelection strategy = new EqualSelection(Arrays.asList(6, 4, 3, 2, 1), empty);
+        MinimumEqualSelection strategy = new MinimumEqualSelection(Arrays.asList(6, 4, 3, 2, 1), empty);
 
         Optional<Category> category = strategy.orElse(new MinValueSelection());
         assertTrue(category.isPresent());
@@ -75,7 +75,7 @@ class EqualSelectionTest {
 
     @Test
     public void should_return_empty_selection_if_no_equals() {
-        EqualSelection strategy = new EqualSelection(Arrays.asList(1, 2, 4, 5, 6), empty);
+        MinimumEqualSelection strategy = new MinimumEqualSelection(Arrays.asList(1, 2, 4, 5, 6), empty);
 
         Optional<Category> category = strategy.select();
 

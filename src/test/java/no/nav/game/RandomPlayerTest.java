@@ -10,7 +10,7 @@ class RandomPlayerTest {
     @Test
     void play() {
 
-        RandomPlayer player = new RandomPlayer(12345678, true);
+        YatzyPlayer player = new YatzyPlayer(12345678, true);
 
         HashMap<Category, Integer> scoresheet = new HashMap<>();
         //scoresheet.put(Category.ONE, 0);
@@ -26,7 +26,7 @@ class RandomPlayerTest {
     @Test
     void play2() {
 
-        RandomPlayer player = new RandomPlayer(1437231842, true);
+        YatzyPlayer player = new YatzyPlayer(1437231842, true);
 
         HashMap<Category, Integer> scoresheet = new HashMap<>();
         scoresheet.put(Category.ONE, 0);

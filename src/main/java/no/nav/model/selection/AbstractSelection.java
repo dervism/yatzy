@@ -19,6 +19,27 @@ public abstract class AbstractSelection implements Selection {
         this.categoryList = categoryList;
     }
 
+    public boolean and(Selection selection) {
+        Selection anotherSelection = selection.build(getDiceList(), getCategoryList());
+        handleEqualSelection(anotherSelection, selection);
+        return select().isPresent() && anotherSelection.select().isPresent();
+    }
+
+    public boolean or(Selection anotherStrategy) {
+        Selection selection = anotherStrategy.build(getDiceList(), getCategoryList());
+        handleEqualSelection(anotherStrategy, selection);
+        return select().isPresent() || selection.select().isPresent();
+    }
+
+    private void handleEqualSelection(Selection anotherSelection, Selection selection) {
+        if (anotherSelection instanceof MinimumEqualSelection) {
+            ((MinimumEqualSelection)anotherSelection).setMinimum(((MinimumEqualSelection)selection).getMinimum());
+        }
+        if (anotherSelection instanceof ExactlyEqualSelection) {
+            ((ExactlyEqualSelection)anotherSelection).setMinimum(((ExactlyEqualSelection)selection).getMinimum());
+        }
+    }
+
     public Collection<Integer> getDiceList() {
         return diceList;
     }

@@ -23,14 +23,6 @@ public interface Selection {
         return selected;
     }
 
-    default boolean and(Selection anotherStrategy) {
-        return select().isPresent() && anotherStrategy.select().isPresent();
-    }
-
-    default boolean or(Selection anotherStrategy) {
-        return select().isPresent() || anotherStrategy.select().isPresent();
-    }
-
     Selection build(Collection<Integer> list, Collection<Category> categories);
     Collection<Integer> getDiceList();
     Collection<Category> getCategoryList();
