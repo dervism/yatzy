@@ -8,5 +8,5 @@ public interface Game {
 
     Map<Category, Double> play();
 
-    double score(Map<Category, Double> total);
+    double score();
 }

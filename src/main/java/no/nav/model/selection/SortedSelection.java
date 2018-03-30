@@ -1,6 +1,7 @@
 package no.nav.model.selection;
 
 import no.nav.model.Category;
+import no.nav.model.ScoreSheet;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -16,8 +17,8 @@ public class SortedSelection extends AbstractSelection {
         super();
     }
 
-    public SortedSelection(Collection<Integer> diceList, Collection<Category> categoryList) {
-        super(diceList, categoryList);
+    public SortedSelection(Collection<Integer> diceList, ScoreSheet scoreSheet) {
+        super(diceList, scoreSheet);
     }
 
     @Override
@@ -28,8 +29,8 @@ public class SortedSelection extends AbstractSelection {
                 .stream()
                 .filter(entry -> !getCategoryList().contains(Category.fromIndex(entry.getKey())))
                 .sorted(Comparator.comparing(Map.Entry<Integer, Long>::getValue)
-                        .thenComparing(Comparator.comparingLong(o -> o.getKey() * o.getValue()))
-                        .thenComparing(Comparator.comparingLong(Map.Entry::getKey)).reversed());
+                        .thenComparingLong(o -> o.getKey() * o.getValue())
+                        .thenComparingLong(Map.Entry::getKey).reversed());
 
         Optional<Map.Entry<Integer, Long>> sortedFirst = sorted.findFirst();
 
@@ -37,7 +38,7 @@ public class SortedSelection extends AbstractSelection {
     }
 
     @Override
-    public Selection build(Collection<Integer> list, Collection<Category> categories) {
-        return new SortedSelection(list, categories);
+    public Selection build(Collection<Integer> diceList, ScoreSheet scoreSheet) {
+        return new SortedSelection(diceList, scoreSheet);
     }
 }

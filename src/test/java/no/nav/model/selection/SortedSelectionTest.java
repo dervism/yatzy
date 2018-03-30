@@ -1,18 +1,17 @@
 package no.nav.model.selection;
 
 import no.nav.model.Category;
+import no.nav.model.ScoreSheet;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SortedSelectionTest {
 
-    private final List<Category> empty = Collections.emptyList();
+    private final ScoreSheet empty = new ScoreSheet();
 
     @Test
     void should_select_bycount_and_byvalue() {

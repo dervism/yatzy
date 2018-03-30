@@ -1,15 +1,14 @@
-package no.nav.game;
+package no.nav.game.player;
 
-import no.nav.model.Category;
+import no.nav.model.ScoreSheet;
 import no.nav.model.ThrowState;
 
 import java.util.List;
-import java.util.Map;
 
 public interface Player {
 
     List<Integer> throwDice(int numberOfDice);
 
-    ThrowState play(Map<Category, Integer> scoresheet);
+    ThrowState play(ScoreSheet scoresheet);
 
 }

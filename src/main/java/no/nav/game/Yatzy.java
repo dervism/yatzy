@@ -1,6 +1,8 @@
 package no.nav.game;
 
+import no.nav.game.player.Player;
 import no.nav.model.Category;
+import no.nav.model.ScoreSheet;
 import no.nav.model.ThrowState;
 
 import java.util.Arrays;
@@ -10,7 +12,9 @@ import java.util.stream.IntStream;
 
 public class Yatzy implements Game {
 
-    private int nrOfGames = 100000;
+    Map<Category, Double> total;
+
+    private int nrOfGames = 100_000;
 
     private Player player;
 
@@ -21,39 +25,39 @@ public class Yatzy implements Game {
     @Override
     public Map<Category, Double> play() {
 
-        Map<Category, Double> total = new HashMap<>(6);
+        total = new HashMap<>(6);
+
         Arrays.stream(Category.values()).forEach(category -> total.put(category, 0D));
 
         IntStream.range(0, nrOfGames).forEach(round -> {
-            Map<Category, Integer> scoreSheet = new HashMap<>(6);
-
-            IntStream.range(0, 6).forEach(i -> {
-
-                ThrowState score = player.play(scoreSheet);
-
-                // log score
-                scoreSheet.put(score.getCategory(), score.getSum());
-                total.put(score.getCategory(), total.get(score.getCategory()) + score.getSum());
-            });
+            ScoreSheet scoreSheet = new ScoreSheet();
+            IntStream.range(0, 6).forEach(i -> updateScore(scoreSheet, player.play(scoreSheet)));
         });
 
-        logGameSummary(total);
+        logGameSummary();
 
         return total;
     }
 
+    private void updateScore(ScoreSheet scoreSheet, ThrowState score) {
+        scoreSheet.put(score.getCategory(), score.getSum());
+        total.computeIfPresent(score.getCategory(), (category, currentScore) -> currentScore + score.getSum());
+    }
+
     @Override
-    public double score(Map<Category, Double> total) {
-        return total.values()
+    public double score() {
+        return this.total.values()
                 .stream()
                 .map(value -> value / nrOfGames)
                 .reduce((d1, d2) -> d1 + d2)
                 .orElse(0D);
     }
 
-    private void logGameSummary(Map<Category, Double> total) {
-        System.out.println("total " + total);
-        System.out.println("Total of averages for " + player + ": " + score(total));
+
+
+    private void logGameSummary() {
+        System.out.println("total " + this.total);
+        System.out.println("Total of averages for " + player + ": " + score());
     }
 
 }

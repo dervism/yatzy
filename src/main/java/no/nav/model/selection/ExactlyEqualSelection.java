@@ -1,6 +1,7 @@
 package no.nav.model.selection;
 
 import no.nav.model.Category;
+import no.nav.model.ScoreSheet;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -22,13 +23,13 @@ public class ExactlyEqualSelection extends AbstractSelection {
         this.minimum = n;
     }
 
-    public ExactlyEqualSelection(Collection<Integer> diceList, Collection<Category> categoryList) {
-        super(diceList, categoryList);
+    public ExactlyEqualSelection(Collection<Integer> diceList, ScoreSheet scoreSheet) {
+        super(diceList, scoreSheet);
         this.minimum = 2;
     }
 
-    public ExactlyEqualSelection(Collection<Integer> diceList, Collection<Category> categoryList, int minimum) {
-        super(diceList, categoryList);
+    public ExactlyEqualSelection(Collection<Integer> diceList, ScoreSheet scoreSheet, int minimum) {
+        super(diceList, scoreSheet);
         this.minimum = minimum;
     }
 
@@ -55,7 +56,7 @@ public class ExactlyEqualSelection extends AbstractSelection {
     }
 
     @Override
-    public Selection build(Collection<Integer> list, Collection<Category> categories) {
-        return new ExactlyEqualSelection(list, categories, 2);
+    public Selection build(Collection<Integer> diceList, ScoreSheet scoreSheet) {
+        return new ExactlyEqualSelection(diceList, scoreSheet, 2);
     }
 }

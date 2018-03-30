@@ -1,18 +1,16 @@
 package no.nav.model.selection;
 
-import no.nav.model.Category;
+import no.nav.model.ScoreSheet;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ExactlyEqualSelectionTest {
 
-    private final List<Category> empty = Collections.emptyList();
+    private final ScoreSheet empty = new ScoreSheet();
 
     @Test
     public void can_be_combined_with_And_has_full_house() {
