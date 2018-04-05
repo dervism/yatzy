@@ -4,7 +4,7 @@ import no.nav.Util;
 import no.nav.http.Dice;
 import no.nav.http.DiceLocal;
 import no.nav.model.Category;
-import no.nav.model.ScoreSheet;
+import no.nav.model.ScoreCard;
 import no.nav.model.ThrowState;
 import no.nav.model.maximizer.FrequencyMaximizer;
 import no.nav.model.maximizer.Maximizer;
@@ -42,7 +42,7 @@ public class YatzyPlayer implements Player {
     }
 
     @Override
-    public ThrowState play(ScoreSheet scoresheet) {
+    public ThrowState play(ScoreCard scoresheet) {
 
         ThrowState firstThrow = firstThrow(scoresheet);
 
@@ -51,7 +51,7 @@ public class YatzyPlayer implements Player {
         return thirdThrow(scoresheet, firstThrow, secondThrow);
     }
 
-    private ThrowState firstThrow(ScoreSheet scoresheet) {
+    private ThrowState firstThrow(ScoreCard scoresheet) {
         ThrowState firstThrow = new ThrowState(throwDice(nrOfDice));
         Category firstCategory = selectCategory(scoresheet, firstThrow).orElse(scoresheet.anyCategory());
         setCategorySum(firstThrow, firstCategory, Util.sum(firstThrow.filterDices(firstCategory.index())));
@@ -63,7 +63,7 @@ public class YatzyPlayer implements Player {
         return firstThrow;
     }
 
-    private ThrowState secondThrow(ScoreSheet scoresheet, ThrowState firstThrow) {
+    private ThrowState secondThrow(ScoreCard scoresheet, ThrowState firstThrow) {
         ThrowState secondThrow = new ThrowState(firstThrow);
 
         List<Integer> selectedDice = firstThrow.filterDices(firstThrow.getCategory().index());
@@ -81,7 +81,7 @@ public class YatzyPlayer implements Player {
         return secondThrow;
     }
 
-    private ThrowState thirdThrow(ScoreSheet scoresheet, ThrowState firstThrow, ThrowState secondThrow) {
+    private ThrowState thirdThrow(ScoreCard scoresheet, ThrowState firstThrow, ThrowState secondThrow) {
         ThrowState thirdThrow = new ThrowState(secondThrow);
 
         List<Integer> selectedDice = secondThrow.filterDices(firstThrow.getCategory().index(), secondThrow.getCategory().index());
@@ -104,7 +104,7 @@ public class YatzyPlayer implements Player {
         state.setSum(sum);
     }
 
-    protected Optional<Category> selectCategory(ScoreSheet scoresheet, ThrowState state) {
+    protected Optional<Category> selectCategory(ScoreCard scoresheet, ThrowState state) {
         return new SortedSelection(state.getDices(), scoresheet)
                 .orElse(new MaxValueSelection(), new MinValueSelection());
     }

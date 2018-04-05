@@ -4,15 +4,15 @@ import java.util.*;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-public class ScoreSheet implements Supplier<ScoreSheet> {
+public class ScoreCard implements Supplier<ScoreCard> {
 
     private Map<Category, Integer> scoresheet;
 
-    public ScoreSheet() {
+    public ScoreCard() {
         this.scoresheet = new HashMap<>(6);
     }
 
-    public ScoreSheet(Collection<Category> categories) {
+    public ScoreCard(Collection<Category> categories) {
         this.scoresheet = new HashMap<>(6);
         categories.forEach(category -> this.scoresheet.put(category, 0));
     }
@@ -31,7 +31,6 @@ public class ScoreSheet implements Supplier<ScoreSheet> {
     public List<Category> selectableCategories() {
         return Arrays.stream(Category.values())
                 .filter(category -> !scoresheet.keySet().contains(category))
-                .sorted(Comparator.comparing(Enum::ordinal))
                 .collect(Collectors.toList());
     }
 
@@ -47,16 +46,16 @@ public class ScoreSheet implements Supplier<ScoreSheet> {
         return scoresheet.containsKey(category);
     }
     @Override
-    public ScoreSheet get() {
-        return new ScoreSheet();
+    public ScoreCard get() {
+        return new ScoreCard();
     }
 
-    public static ScoreSheet of(Collection<Category> categories) {
-        return new ScoreSheet(categories);
+    public static ScoreCard of(Collection<Category> categories) {
+        return new ScoreCard(categories);
     }
 
-    public static ScoreSheet of(Category... categories) {
-        return new ScoreSheet(Arrays.stream(categories).collect(Collectors.toList()));
+    public static ScoreCard of(Category... categories) {
+        return new ScoreCard(Arrays.stream(categories).collect(Collectors.toList()));
     }
 
 }

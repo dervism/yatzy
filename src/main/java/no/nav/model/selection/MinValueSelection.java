@@ -2,7 +2,7 @@ package no.nav.model.selection;
 
 import no.nav.Util;
 import no.nav.model.Category;
-import no.nav.model.ScoreSheet;
+import no.nav.model.ScoreCard;
 
 import java.util.Collection;
 import java.util.List;
@@ -14,8 +14,8 @@ public class MinValueSelection extends AbstractSelection {
         super();
     }
 
-    public MinValueSelection(Collection<Integer> diceList, ScoreSheet scoreSheet) {
-        super(diceList, scoreSheet);
+    public MinValueSelection(Collection<Integer> diceList, ScoreCard scoreCard) {
+        super(diceList, scoreCard);
     }
 
     @Override
@@ -25,7 +25,7 @@ public class MinValueSelection extends AbstractSelection {
         Category category = Category.fromIndex(max);
         if (!getCategoryList().contains(category)) return Optional.of(category);
 
-        List<Integer> notTaken = scoreSheet.selectableValues(getDiceList());
+        List<Integer> notTaken = scoreCard.selectableValues(getDiceList());
 
         // the currently available categories is not among the dice we got
         if (notTaken.isEmpty()) return Optional.empty();
@@ -35,7 +35,7 @@ public class MinValueSelection extends AbstractSelection {
     }
 
     @Override
-    public Selection build(Collection<Integer> diceList, ScoreSheet scoreSheet) {
-        return new MinValueSelection(diceList, scoreSheet);
+    public Selection build(Collection<Integer> diceList, ScoreCard scoreCard) {
+        return new MinValueSelection(diceList, scoreCard);
     }
 }

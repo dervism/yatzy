@@ -2,7 +2,7 @@ package no.nav.game;
 
 import no.nav.game.player.Player;
 import no.nav.model.Category;
-import no.nav.model.ScoreSheet;
+import no.nav.model.ScoreCard;
 import no.nav.model.ThrowState;
 
 import java.util.Arrays;
@@ -30,8 +30,8 @@ public class Yatzy implements Game {
         Arrays.stream(Category.values()).forEach(category -> total.put(category, 0D));
 
         IntStream.range(0, nrOfGames).forEach(round -> {
-            ScoreSheet scoreSheet = new ScoreSheet();
-            IntStream.range(0, 6).forEach(i -> updateScore(scoreSheet, player.play(scoreSheet)));
+            ScoreCard scoreCard = new ScoreCard();
+            IntStream.range(0, 6).forEach(i -> updateScore(scoreCard, player.play(scoreCard)));
         });
 
         logGameSummary();
@@ -39,8 +39,8 @@ public class Yatzy implements Game {
         return total;
     }
 
-    private void updateScore(ScoreSheet scoreSheet, ThrowState score) {
-        scoreSheet.put(score.getCategory(), score.getSum());
+    private void updateScore(ScoreCard scoreCard, ThrowState score) {
+        scoreCard.put(score.getCategory(), score.getSum());
         total.computeIfPresent(score.getCategory(), (category, currentScore) -> currentScore + score.getSum());
     }
 

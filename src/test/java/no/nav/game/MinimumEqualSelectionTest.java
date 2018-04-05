@@ -1,7 +1,7 @@
 package no.nav.game;
 
 import no.nav.model.Category;
-import no.nav.model.ScoreSheet;
+import no.nav.model.ScoreCard;
 import no.nav.model.selection.MaxValueSelection;
 import no.nav.model.selection.MinValueSelection;
 import no.nav.model.selection.MinimumEqualSelection;
@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MinimumEqualSelectionTest {
 
-    private final ScoreSheet empty = new ScoreSheet();
+    private final ScoreCard empty = new ScoreCard();
 
     @Test
     void should_select_the_highest_valued_pair() {
@@ -31,7 +31,7 @@ class MinimumEqualSelectionTest {
     @Test
     void should_select_the_next_highest_valued_pair_if_taken() {
         MinimumEqualSelection strategy = new MinimumEqualSelection(Arrays.asList(5, 6, 1, 5, 1),
-                ScoreSheet.of(Arrays.asList(Category.FIVE)));
+                ScoreCard.of(Arrays.asList(Category.FIVE)));
 
         Optional<Category> category = strategy.select();
         assertTrue(category.isPresent());

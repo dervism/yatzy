@@ -1,7 +1,7 @@
 package no.nav.model.selection;
 
 import no.nav.model.Category;
-import no.nav.model.ScoreSheet;
+import no.nav.model.ScoreCard;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -20,8 +20,8 @@ public interface Selection {
      * a new Selection-object.
      *
      * @param diceList a collection of dice
-     * @param scoreSheet a collection of categories
+     * @param scoreCard a collection of categories
      * @return a new instance of a Selection-object.
      */
-    Selection build(Collection<Integer> diceList, ScoreSheet scoreSheet);
+    Selection build(Collection<Integer> diceList, ScoreCard scoreCard);
 }

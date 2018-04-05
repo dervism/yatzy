@@ -1,7 +1,7 @@
 package no.nav.model.selection;
 
 import no.nav.model.Category;
-import no.nav.model.ScoreSheet;
+import no.nav.model.ScoreCard;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -10,15 +10,15 @@ import java.util.Optional;
 public abstract class AbstractSelection implements Selection {
 
     protected java.util.Collection<Integer> diceList;
-    protected ScoreSheet scoreSheet;
+    protected ScoreCard scoreCard;
 
     public AbstractSelection() {
-        this(Collections.emptyList(), new ScoreSheet());
+        this(Collections.emptyList(), new ScoreCard());
     }
 
-    public AbstractSelection(Collection<Integer> diceList, ScoreSheet scoreSheet) {
+    public AbstractSelection(Collection<Integer> diceList, ScoreCard scoreCard) {
         this.diceList = diceList;
-        this.scoreSheet = scoreSheet;
+        this.scoreCard = scoreCard;
     }
 
     public Optional<Category> orElse(Selection... elseStrategies) {
@@ -26,7 +26,7 @@ public abstract class AbstractSelection implements Selection {
 
         if (!selected.isPresent()) {
             for (Selection selection : elseStrategies) {
-                Optional<Category> category = selection.build(getDiceList(), scoreSheet).select();
+                Optional<Category> category = selection.build(getDiceList(), scoreCard).select();
                 if (category.isPresent()) return category;
             }
         }
@@ -35,13 +35,13 @@ public abstract class AbstractSelection implements Selection {
     }
 
     public boolean and(Selection selection) {
-        Selection anotherSelection = selection.build(getDiceList(), scoreSheet);
+        Selection anotherSelection = selection.build(getDiceList(), scoreCard);
         handleEqualSelection(anotherSelection, selection);
         return select().isPresent() && anotherSelection.select().isPresent();
     }
 
     public boolean or(Selection anotherStrategy) {
-        Selection selection = anotherStrategy.build(getDiceList(), scoreSheet);
+        Selection selection = anotherStrategy.build(getDiceList(), scoreCard);
         handleEqualSelection(anotherStrategy, selection);
         return select().isPresent() || selection.select().isPresent();
     }
@@ -60,6 +60,6 @@ public abstract class AbstractSelection implements Selection {
     }
 
     public Collection<Category> getCategoryList() {
-        return scoreSheet.selectedCategories();
+        return scoreCard.selectedCategories();
     }
 }

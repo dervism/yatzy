@@ -1,6 +1,6 @@
 package no.nav.model.selection;
 
-import no.nav.model.ScoreSheet;
+import no.nav.model.ScoreCard;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ExactlyEqualSelectionTest {
 
-    private final ScoreSheet empty = new ScoreSheet();
+    private final ScoreCard empty = new ScoreCard();
 
     @Test
     public void can_be_combined_with_And_has_full_house() {

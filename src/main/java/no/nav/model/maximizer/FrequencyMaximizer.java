@@ -1,7 +1,7 @@
 package no.nav.model.maximizer;
 
 import no.nav.model.Category;
-import no.nav.model.ScoreSheet;
+import no.nav.model.ScoreCard;
 import no.nav.model.ThrowState;
 
 import java.util.Collections;
@@ -13,7 +13,7 @@ public class FrequencyMaximizer implements Maximizer {
     }
 
     @Override
-    public Category maximize(Category selectedCategory, ThrowState state, ScoreSheet scoresheet) {
+    public Category maximize(Category selectedCategory, ThrowState state, ScoreCard scoresheet) {
         if (selectedCategory == Category.SIX) {
             int freq6 = Collections.frequency(state.getDices(), 6);
             if (freq6 < 3) {
