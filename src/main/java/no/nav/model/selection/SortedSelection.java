@@ -1,9 +1,7 @@
 package no.nav.model.selection;
 
 import no.nav.model.Category;
-import no.nav.model.ScoreCard;
 
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.Optional;
@@ -17,8 +15,8 @@ public class SortedSelection extends AbstractSelection {
         super();
     }
 
-    public SortedSelection(Collection<Integer> diceList, ScoreCard scoreCard) {
-        super(diceList, scoreCard);
+    public SortedSelection(SelectionParams selectionParams) {
+        super(selectionParams);
     }
 
     @Override
@@ -38,7 +36,7 @@ public class SortedSelection extends AbstractSelection {
     }
 
     @Override
-    public Selection build(Collection<Integer> diceList, ScoreCard scoreCard) {
-        return new SortedSelection(diceList, scoreCard);
+    public Selection build(SelectionParams selectionParams) {
+        return new SortedSelection(selectionParams);
     }
 }

@@ -10,6 +10,7 @@ import no.nav.model.maximizer.FrequencyMaximizer;
 import no.nav.model.maximizer.Maximizer;
 import no.nav.model.selection.MaxValueSelection;
 import no.nav.model.selection.MinValueSelection;
+import no.nav.model.selection.SelectionParams;
 import no.nav.model.selection.SortedSelection;
 
 import java.util.List;
@@ -105,7 +106,7 @@ public class YatzyPlayer implements Player {
     }
 
     protected Optional<Category> selectCategory(ScoreCard scoresheet, ThrowState state) {
-        return new SortedSelection(state.getDices(), scoresheet)
+        return new SortedSelection(new SelectionParams(state.getDices(), scoresheet))
                 .orElse(new MaxValueSelection(), new MinValueSelection());
     }
 

@@ -1,35 +1,34 @@
 package no.nav.model.selection;
 
 import no.nav.model.Category;
-import no.nav.model.ScoreCard;
 
-import java.util.Collection;
 import java.util.Comparator;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class MinimumEqualSelection extends AbstractSelection {
+public class EqualSelection extends AbstractSelection {
 
     private int minimum;
 
-    public MinimumEqualSelection() {
+    public EqualSelection() {
         this(2);
     }
 
-    public MinimumEqualSelection(int n) {
+    public EqualSelection(int n) {
         super();
         this.minimum = n;
     }
 
-    public MinimumEqualSelection(Collection<Integer> diceList, ScoreCard scoreCard) {
-        super(diceList, scoreCard);
+    public EqualSelection(SelectionParams selectionParams) {
+        super(selectionParams);
         this.minimum = 2;
     }
 
-    public MinimumEqualSelection(Collection<Integer> diceList, ScoreCard scoreCard, int minimum) {
-        super(diceList, scoreCard);
+    public EqualSelection(SelectionParams selectionParams, int minimum) {
+        super(selectionParams);
         this.minimum = minimum;
     }
 
@@ -47,7 +46,7 @@ public class MinimumEqualSelection extends AbstractSelection {
                 .collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
                 .entrySet()
                 .stream()
-                .filter(entry -> entry.getValue() >= minimum)
+                .filter(exactMatchPredicate(minimum))
                 .filter(entry -> !getCategoryList().contains(Category.fromIndex(entry.getKey())))
                 .max(Comparator.comparing(Map.Entry<Integer, Long>::getValue)
                         .thenComparing(Map.Entry::getKey));
@@ -56,7 +55,15 @@ public class MinimumEqualSelection extends AbstractSelection {
     }
 
     @Override
-    public Selection build(Collection<Integer> diceList, ScoreCard scoreCard) {
-        return new MinimumEqualSelection(diceList, scoreCard, 2);
+    public Selection build(SelectionParams selectionParams) {
+        return new EqualSelection(selectionParams, 2);
+    }
+
+    public static Predicate<Map.Entry<Integer, Long>> exactMatchPredicate(int match) {
+        return entry -> entry.getValue() == match;
+    }
+
+    public static Predicate<Map.Entry<Integer, Long>> minimumMatchPredicate(int match) {
+        return entry -> entry.getValue() >= match;
     }
 }

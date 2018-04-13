@@ -9,16 +9,14 @@ import java.util.Optional;
 
 public abstract class AbstractSelection implements Selection {
 
-    protected java.util.Collection<Integer> diceList;
-    protected ScoreCard scoreCard;
+    protected SelectionParams selectionParams;
 
     public AbstractSelection() {
-        this(Collections.emptyList(), new ScoreCard());
+        this(new SelectionParams(Collections.emptyList(), new ScoreCard()));
     }
 
-    public AbstractSelection(Collection<Integer> diceList, ScoreCard scoreCard) {
-        this.diceList = diceList;
-        this.scoreCard = scoreCard;
+    public AbstractSelection(SelectionParams selectionParams) {
+        this.selectionParams = selectionParams;
     }
 
     public Optional<Category> orElse(Selection... elseStrategies) {
@@ -26,7 +24,7 @@ public abstract class AbstractSelection implements Selection {
 
         if (!selected.isPresent()) {
             for (Selection selection : elseStrategies) {
-                Optional<Category> category = selection.build(getDiceList(), scoreCard).select();
+                Optional<Category> category = selection.build(selectionParams).select();
                 if (category.isPresent()) return category;
             }
         }
@@ -35,31 +33,28 @@ public abstract class AbstractSelection implements Selection {
     }
 
     public boolean and(Selection selection) {
-        Selection anotherSelection = selection.build(getDiceList(), scoreCard);
+        Selection anotherSelection = selection.build(selectionParams);
         handleEqualSelection(anotherSelection, selection);
         return select().isPresent() && anotherSelection.select().isPresent();
     }
 
     public boolean or(Selection anotherStrategy) {
-        Selection selection = anotherStrategy.build(getDiceList(), scoreCard);
+        Selection selection = anotherStrategy.build(selectionParams);
         handleEqualSelection(anotherStrategy, selection);
         return select().isPresent() || selection.select().isPresent();
     }
 
     private void handleEqualSelection(Selection anotherSelection, Selection selection) {
-        if (anotherSelection instanceof MinimumEqualSelection) {
-            ((MinimumEqualSelection)anotherSelection).setMinimum(((MinimumEqualSelection)selection).getMinimum());
-        }
-        if (anotherSelection instanceof ExactlyEqualSelection) {
-            ((ExactlyEqualSelection)anotherSelection).setMinimum(((ExactlyEqualSelection)selection).getMinimum());
+        if (anotherSelection instanceof EqualSelection) {
+            ((EqualSelection)anotherSelection).setMinimum(((EqualSelection)selection).getMinimum());
         }
     }
 
     public Collection<Integer> getDiceList() {
-        return diceList;
+        return selectionParams.getDiceList();
     }
 
     public Collection<Category> getCategoryList() {
-        return scoreCard.selectedCategories();
+        return selectionParams.getScoreCard().selectedCategories();
     }
 }

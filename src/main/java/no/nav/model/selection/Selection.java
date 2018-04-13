@@ -1,9 +1,7 @@
 package no.nav.model.selection;
 
 import no.nav.model.Category;
-import no.nav.model.ScoreCard;
 
-import java.util.Collection;
 import java.util.Optional;
 
 public interface Selection {
@@ -16,12 +14,10 @@ public interface Selection {
     Optional<Category> select();
 
     /**
-     * Given a set of dice and categories, construct
+     * Given a set of parameters, construct
      * a new Selection-object.
      *
-     * @param diceList a collection of dice
-     * @param scoreCard a collection of categories
      * @return a new instance of a Selection-object.
      */
-    Selection build(Collection<Integer> diceList, ScoreCard scoreCard);
+    Selection build(SelectionParams selectionParams);
 }

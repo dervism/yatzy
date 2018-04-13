@@ -1,8 +1,7 @@
-package no.nav.strategy;
+package no.nav.model.selection;
 
 import no.nav.model.Category;
 import no.nav.model.ScoreCard;
-import no.nav.model.selection.RandomSelection;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -15,7 +14,7 @@ class RandomSelectionTest {
 
     @Test
     void select() {
-        RandomSelection r = new RandomSelection(Arrays.asList(1, 2, 3, 4, 5), new ScoreCard());
+        RandomSelection r = new RandomSelection(SelectionParams.of(Arrays.asList(1, 2, 3, 4, 5), new ScoreCard()));
         Optional<Category> category = r.select();
 
         assertTrue(category.isPresent());
@@ -23,7 +22,7 @@ class RandomSelectionTest {
 
     @Test
     void select_only_not_taken() {
-        RandomSelection r = new RandomSelection(Arrays.asList(1, 2, 3, 4, 5), ScoreCard.of(ONE, TWO, THREE, FOUR, SIX));
+        RandomSelection r = new RandomSelection(SelectionParams.of(Arrays.asList(1, 2, 3, 4, 5), ScoreCard.of(ONE, TWO, THREE, FOUR, SIX)));
         Optional<Category> category = r.select();
 
         assertTrue(category.isPresent());
