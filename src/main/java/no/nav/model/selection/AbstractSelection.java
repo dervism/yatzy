@@ -38,10 +38,10 @@ public abstract class AbstractSelection implements Selection {
         return select().isPresent() && anotherSelection.select().isPresent();
     }
 
-    public boolean or(Selection anotherStrategy) {
-        Selection selection = anotherStrategy.build(selectionParams);
-        handleEqualSelection(anotherStrategy, selection);
-        return select().isPresent() || selection.select().isPresent();
+    public boolean or(Selection selection) {
+        Selection anotherSelection = selection.build(selectionParams);
+        handleEqualSelection(anotherSelection, selection);
+        return select().isPresent() || anotherSelection.select().isPresent();
     }
 
     private void handleEqualSelection(Selection anotherSelection, Selection selection) {
