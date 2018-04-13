@@ -35,8 +35,4 @@ public class SortedSelection extends AbstractSelection {
         return sortedFirst.map(value -> Category.fromIndex(value.getKey()));
     }
 
-    @Override
-    public Selection build(SelectionParams selectionParams) {
-        return new SortedSelection(selectionParams);
-    }
 }

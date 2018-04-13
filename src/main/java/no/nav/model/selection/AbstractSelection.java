@@ -24,7 +24,7 @@ public abstract class AbstractSelection implements Selection {
 
         if (!selected.isPresent()) {
             for (Selection selection : elseStrategies) {
-                Optional<Category> category = selection.build(selectionParams).select();
+                Optional<Category> category = new SelectionFactory().build(selection, selectionParams).select();
                 if (category.isPresent()) return category;
             }
         }
@@ -33,18 +33,17 @@ public abstract class AbstractSelection implements Selection {
     }
 
     public boolean and(Selection selection) {
-        Selection anotherSelection = selection.build(selectionParams);
-        handleEqualSelection(anotherSelection, selection);
+        Selection anotherSelection = new SelectionFactory().build(selection, selectionParams);
         return select().isPresent() && anotherSelection.select().isPresent();
     }
 
     public boolean or(Selection selection) {
-        Selection anotherSelection = selection.build(selectionParams);
-        handleEqualSelection(anotherSelection, selection);
+        Selection anotherSelection = new SelectionFactory().build(selection, selectionParams);
+
         return select().isPresent() || anotherSelection.select().isPresent();
     }
 
-    private void handleEqualSelection(Selection anotherSelection, Selection selection) {
+    private void mapSelection(Selection anotherSelection, Selection selection) {
         if (anotherSelection instanceof EqualSelection) {
             ((EqualSelection)anotherSelection).setMinimum(((EqualSelection)selection).getMinimum());
         }

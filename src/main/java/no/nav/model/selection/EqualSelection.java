@@ -54,11 +54,6 @@ public class EqualSelection extends AbstractSelection {
         return max.map(entry -> Category.fromIndex(entry.getKey()));
     }
 
-    @Override
-    public Selection build(SelectionParams selectionParams) {
-        return new EqualSelection(selectionParams, 2);
-    }
-
     public static Predicate<Map.Entry<Integer, Long>> exactMatchPredicate(int match) {
         return entry -> entry.getValue() == match;
     }

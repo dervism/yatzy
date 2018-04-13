@@ -31,9 +31,4 @@ public class MinValueSelection extends AbstractSelection {
         Integer nextMax = Util.min(notTaken);
         return Optional.of(Category.fromIndex(nextMax));
     }
-
-    @Override
-    public Selection build(SelectionParams selectionParams) {
-        return new MinValueSelection(selectionParams);
-    }
 }

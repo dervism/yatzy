@@ -29,8 +29,4 @@ public class RandomSelection extends AbstractSelection {
         return Optional.of(Category.fromIndex(notTaken.get(0)));
     }
 
-    @Override
-    public Selection build(SelectionParams selectionParams) {
-        return new RandomSelection(selectionParams);
-    }
 }

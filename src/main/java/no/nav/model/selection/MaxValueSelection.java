@@ -32,8 +32,4 @@ public class MaxValueSelection extends AbstractSelection {
         return Optional.of(Category.fromIndex(nextMax));
     }
 
-    @Override
-    public Selection build(SelectionParams selectionParams) {
-        return new MaxValueSelection(selectionParams);
-    }
 }

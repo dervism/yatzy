@@ -13,11 +13,4 @@ public interface Selection {
      */
     Optional<Category> select();
 
-    /**
-     * Given a set of parameters, construct
-     * a new Selection-object.
-     *
-     * @return a new instance of a Selection-object.
-     */
-    Selection build(SelectionParams selectionParams);
 }
