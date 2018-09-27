@@ -1,3 +1,3 @@
 # yatzy
 
-Yatzy implementation scoring in average 57 points.
+Yatzy implementation scoring in average 57 points (only upper half categories).
