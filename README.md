@@ -1,3 +1,3 @@
-# yatzy
+# yatzy-kata
 
-Yatzy implementation scoring in average 57 points (only upper half categories).
+Yatzy simulation scoring in average 57 points (only upper half categories are implemented).
